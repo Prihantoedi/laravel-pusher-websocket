@@ -24,13 +24,52 @@
         </div>
 
         <div class="bottom">
-            <form action="">
+            <form>
                 <input type="text" id="message" name="message" placeholder="Enter message..." autocomplete="off">
                 <button></button>
             </form>
             
         </div>
     </div>
-    
 </body>
+<script>
+    const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'eu'});
+
+    const channel = pusher.subscribe('public');
+
+    // Receive messages
+    channel.bind('chat', function(data){
+        $.post("/receive", {
+            _token: '{{csrf_token()}}',
+            message: data.message,
+        })
+            .done(function (res){
+                $('.messages > .message').last().after(res);
+                $(document).scrollTop($(document).height());
+            });
+        
+    });
+
+    // Broadcast messages
+    $("form").submit(function(event){
+        event.preventDefault();
+        
+        $.ajax({
+            url: '/broadcast',
+            method: 'POST',
+            headers: {
+                'X-Socket-Id' : pusher.connections.socket_id
+            },
+            data : {
+                _token: '{{csrf_token()}}',
+                message: ${"form #message"}.val(),
+            }
+        })done(function(res){
+            $(".messages > .message").last().after(res);
+            $("form #message").val('');
+            $(document).scrollTop($(dcoument).height());
+        });
+    });
+
+</script>
 </html>
