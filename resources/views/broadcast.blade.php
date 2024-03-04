@@ -1,4 +1,4 @@
 <div class="right message">
     <p>{{$message}}</p>
-    <img src="https://assets/edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Profile picture">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXElxyzRuhdkeJWPkQ9FVIiPZJITEQZ4nctTPQ1kMlZXZZLuVQCQRhZPtTzg&s" alt="Profile picture">
 </div>
